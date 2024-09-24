@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Función que simula el comportamiento de un autómata
+bool automata(string palabra) {
+    // Estado de inicio
+    string estadoActual = "inicio"; // Cambié de "q0" a "inicio"
+
+    // Recorremos cada carácter en la palabra ingresada
+    for (char simbolo : palabra) {
+        if (estadoActual == "inicio") { // Estado inicial "inicio"
+            if (simbolo == 'a') {
+                estadoActual = "estado_a"; // Cambié de "q1" a "estado_a"
+            } else if (simbolo == 'b') {
+                estadoActual = "estado_b"; // Cambié de "q2" a "estado_b"
+            } else {
+                return false; // Símbolo no reconocido por el autómata
+            }
+        } else if (estadoActual == "estado_a") { // Estado "estado_a"
+            if (simbolo == 'a' || simbolo == 'b') {
+                estadoActual = "estado_a"; // Se queda en "estado_a" con 'a' o 'b'
+            } else {
+                return false; // Símbolo no reconocido
+            }
+        } else if (estadoActual == "estado_b") { // Estado "estado_b"
+            if (simbolo == 'b') {
+                estadoActual = "estado_b"; // Se queda en "estado_b" con 'b'
+            } else if (simbolo == 'a') {
+                estadoActual = "inicio"; // Vuelve al estado inicial "inicio"
+            } else {
+                return false; // Símbolo no reconocido
+            }
+        }
+    }
+
+    // Verificamos si el autómata termina en un estado de aceptación
+    return estadoActual == "estado_a" || estadoActual == "estado_b";
+}
+
+int main() {
+    // Conjunto de palabras a ser evaluadas por el autómata
+    string listaPalabras[] = {"ab", "ba", "aaa", "bba", "abb", "bbb", "aab"}; 
+    int cantidad = sizeof(listaPalabras) / sizeof(listaPalabras[0]); // Tamaño del array
+
+    // Iteramos a través de todas las palabras en el array
+    for (int i = 0; i < cantidad; i++) {
+        if (automata(listaPalabras[i])) { 
+            // Si la palabra es aceptada por el autómata
+            cout << "La palabra '" << listaPalabras[i] << "' es aceptada." << endl;
+        } else {
+            // Si la palabra no es aceptada por el autómata
+            cout << "La palabra '" << listaPalabras[i] << "' no es aceptada." << endl;
+        }
+    }
+
+    return 0;
+}
